@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  project-jupyterlab:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: jupterylab-server
+    # restart: unless-stopped # Uncomment this line to ensure that the docker image is always running once started
+    ports:
+      - 9999:9999
+    volumes:
+      - './:/opt/jupyterlab' # This mounts the base directory of the repository as the working directory in the container
