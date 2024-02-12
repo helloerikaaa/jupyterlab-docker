@@ -14,17 +14,11 @@ RUN apt install -y nodejs npm
 
 # Install and configure Jupyterlab
 RUN mkdir -p /opt/jupyterlab/
-RUN pip3 install jupyterlab jupyter ipywidgets
-RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
-RUN jupyter nbextension enable --py widgetsnbextension
-RUN jupyter serverextension enable --py jupyterlab
+RUN pip3 install jupyterlab
 
-# Configure Jupyterlab Kernel for Python 2 & 3
+# Configure Jupyterlab Kernel for Python 3
 RUN pip3 install ipykernel
 RUN python3 -m ipykernel install
-
-# Set blank password on notebook. Comment out this to require password on startup
-RUN echo "c.NotebookApp.token = u''" >> ~/.jupyter/jupyter_notebook_config.py
 
 # Set working directory
 WORKDIR /opt/jupyterlab
@@ -38,11 +32,11 @@ RUN pip3 install pandas numpy scipy matplotlib scikit-learn seaborn tqdm torch t
 ############################
 # Install CUDA             #
 ############################
-RUN apt install ubuntu-drivers-common
-RUN apt install nvidia-driver-525
+RUN apt install ubuntu-drivers-common -y
+RUN apt install nvidia-driver-525 -y
 RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
 RUN dpkg -i cuda-keyring_1.1-1_all.deb
-RUN apt-get update
+RUN apt-get update -y
 RUN apt-get -y install cuda-toolkit-12-3
 RUN echo "PATH=/usr/local/cuda/bin${PATH:+:${PATH}}" >> ~/.bashrc
 RUN echo "LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" >> ~/.bashrc
